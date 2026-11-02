@@ -1,44 +1,16 @@
-
-import requests
+import requesimport requests
 import time
-import os
-import json
 
-BOT_TOKEN = os.getenv("BOT_TOKEN", "PASTE_NEW_BOT_TOKEN")
-
-TARGET_CHAT_ID = 8485299821
+BOT_TOKEN = "9227645405:AAE3vtGZZdqlW9f9eJ8Qw-QsZC-gh35Cv-w"
+REPLY = "Hey! I am bot powered by Ankit 
+Ankit is currently offline for an indefinite period of time.
+There is a very low chance that he will respond to your message anytime soon.
+Please don't expect an immediate reply.
+Thank you for your understanding! ❤️"
 
 API = f"https://api.telegram.org/bot{BOT_TOKEN}/"
 
-REPLY_FILE = "reply.json"
-waiting_for_reply = False
 offset = 0
-
-
-def save_reply(message):
-    with open(REPLY_FILE, "w", encoding="utf-8") as f:
-        json.dump({"reply": message}, f, ensure_ascii=False)
-
-
-def load_reply():
-    try:
-        with open(REPLY_FILE, "r", encoding="utf-8") as f:
-            return json.load(f).get("reply", "🥱🥱")
-    except:
-        return "🥱🥱"
-
-
-def send_message(chat_id, message):
-    requests.post(
-        API + "sendMessage",
-        data={
-            "chat_id": chat_id,
-            "text": message
-        },
-        timeout=15
-    )
-
-
 print("Auto Reply Bot Started 🥱🥱")
 
 while True:
@@ -56,31 +28,16 @@ while True:
             chat = message.get("chat", {})
             text = message.get("text", "")
 
-            if chat.get("type") != "private":
-                continue
-
-            if chat.get("id") != TARGET_CHAT_ID or not text:
-                continue
-
-            if text == "/setdm":
-                waiting_for_reply = True
-                send_message(
-                    TARGET_CHAT_ID,
-                    "✍️ Send your new auto reply message."
+            if chat.get("type") == "private" and text:
+                requests.post(
+                    API + "sendMessage",
+                    data={
+                        "chat_id": chat["id"],
+                        "text": REPLY
+                    },
+                    timeout=15
                 )
-                continue
-
-            if waiting_for_reply:
-                save_reply(text)
-                waiting_for_reply = False
-
-                send_message(
-                    TARGET_CHAT_ID,
-                    "✅ Your auto reply has been saved!"
-                )
-                continue
-
-            send_message(TARGET_CHAT_ID, load_reply())
+                print("Reply sent 🥱🥱")
 
     except Exception as e:
         print("Error:", e)
