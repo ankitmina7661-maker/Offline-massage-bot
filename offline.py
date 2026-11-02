@@ -2,11 +2,14 @@ import requesimport requests
 import time
 
 BOT_TOKEN = "9227645405:AAE3vtGZZdqlW9f9eJ8Qw-QsZC-gh35Cv-w"
-REPLY = "Hey! I am bot powered by Ankit 
+
+REPLY = """Hey! I am bot powered by Ankit
+
 Ankit is currently offline for an indefinite period of time.
 There is a very low chance that he will respond to your message anytime soon.
 Please don't expect an immediate reply.
-Thank you for your understanding! ❤️"
+Thank you for your understanding! ❤️"""
+
 
 API = f"https://api.telegram.org/bot{BOT_TOKEN}/"
 
